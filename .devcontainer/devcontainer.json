@@ -1,0 +1,12 @@
+{
+  "name": "Spring + Maven (Java 21) + Postgres",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "customizations": {
+    "vscode": {
+      "extensions": ["vscjava.vscode-java-pack", "vmware.vscode-spring-boot"]
+    }
+  },
+  "forwardPorts": [8080, 5432]
+}
