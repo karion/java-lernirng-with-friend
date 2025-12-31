@@ -2,6 +2,7 @@
   "name": "Spring + Maven (Java 21) + Postgres",
   "dockerComposeFile": ["../docker-compose.yml"],
   "service": "app",
+  "remoteUser": "vscode",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "customizations": {
     "vscode": {
