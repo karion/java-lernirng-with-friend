@@ -28,10 +28,8 @@ public final class Money {
         );
     }
 
-    public Money add(Money other) throws DomainException {
-        if (other == null) {
-            throw new NullPointerException();
-        }
+    public Money add(Money other) {
+        Objects.requireNonNull(other, "other");
 
         if (!other.currency.equals(this.currency)) {
             throw new DomainException("Can't convert currency.");
@@ -43,10 +41,8 @@ public final class Money {
         );
     }
 
-    public Money sub(Money other) throws DomainException {
-        if (other == null) {
-            throw new NullPointerException();
-        }
+    public Money sub(Money other) {
+        Objects.requireNonNull(other, "other");
 
         if (!other.currency.equals(this.currency)) {
             throw new DomainException("Can't convert currency.");
@@ -60,5 +56,10 @@ public final class Money {
 
     public long amountInCents() {
         return cents;
+    }
+
+    public Currency getCurrency()
+    {
+        return this.currency;
     }
 }

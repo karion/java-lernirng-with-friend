@@ -14,7 +14,7 @@ public class MoneyTest {
             "0,'PLN','0.00PLN'",
             "1,'PLN','0.01PLN'",
             "150,'PLN','1.50PLN'",
-            "-2000,'EUR', '-20.00EUR'"
+            "-2000,'EUR','-20.00EUR'"
     })
     void print_money(long a, String c, String expected) {
         Money aMoney = new Money(a, Currency.from(c));

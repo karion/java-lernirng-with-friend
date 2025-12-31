@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import pl.net.karion.domain.DomainException;
 
-enum Currency {
+public enum Currency {
     PLN, USD, EUR;
 
     static Currency from(String value) {
