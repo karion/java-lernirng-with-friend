@@ -1,19 +1,13 @@
-package pl.net.karion.domain;
+package pl.net.karion.domain.money;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+
+
 
 import static org.assertj.core.api.Assertions.*;
 
 public class MoneyTest {
-
-    @Test
-    void should_throw_when_currency_is_empty() {
-        assertThatThrownBy(() -> new Money(100, ""))
-            .isInstanceOf(DomainException.class)
-            .hasMessageContaining("Unknown Currency");
-    }
 
     @ParameterizedTest
     @CsvSource({
@@ -23,7 +17,7 @@ public class MoneyTest {
             "-2000,'EUR', '-20.00EUR'"
     })
     void print_money(long a, String c, String expected) {
-        Money aMoney = new Money(a, c);
+        Money aMoney = new Money(a, Currency.from(c));
         assertThat(aMoney.print()).isEqualTo(expected);
     }
 
@@ -36,10 +30,10 @@ public class MoneyTest {
             "-5,-6,-11"
     })
     void add_should_sum_cents(long a, long b, long expected) {
-            Money aMoney = new Money(a, "PLN");
-            Money bMoney = new Money(b, "PLN");
+            Money aMoney = new Money(a,  Currency.from("PLN"));
+            Money bMoney = new Money(b, Currency.from("PLN"));
             Money result = aMoney.add(bMoney);
-            assertThat(result.getValue()).isEqualTo(expected);
+            assertThat(result.amountInCents()).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -51,13 +45,9 @@ public class MoneyTest {
             "-50,10,-60"
     })
     void sub_should_subtract_cents(long a, long b, long expected) {
-            Money aMoney = new Money(a, "PLN");
-            Money bMoney = new Money(b, "PLN");
+            Money aMoney = new Money(a,  Currency.from("PLN"));
+            Money bMoney = new Money(b, Currency.from("PLN"));
             Money result = aMoney.sub(bMoney);
-            assertThat(result.getValue()).isEqualTo(expected);
+            assertThat(result.amountInCents()).isEqualTo(expected);
     }
-
-
-
-    
 }

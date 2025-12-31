@@ -1,20 +1,18 @@
-package pl.net.karion.domain;
+package pl.net.karion.domain.money;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+
+import pl.net.karion.domain.DomainException;
 
 public final class Money {
     private final long cents;
-    private final String currency;
+    private final Currency currency;
 
-    public Money(long cents, String currency) throws DomainException {
+    public Money(long cents, Currency currency) {
         this.cents = cents;
-        if (!this.validateCurrency(currency)) {
-            throw new DomainException("Unknown Currency");
-        }
-        this.currency = currency;
+        this.currency = Objects.requireNonNull(currency);
     }
 
     public String print() {
@@ -30,12 +28,6 @@ public final class Money {
         );
     }
 
-    private boolean validateCurrency(String currency) {
-        List<String> avaibleCurreny = Arrays.asList(new String[] {"PLN", "USD", "EUR"});
-
-        return avaibleCurreny.contains(currency);
-    }
-    
     public Money add(Money other) throws DomainException {
         if (other == null) {
             throw new NullPointerException();
@@ -61,12 +53,12 @@ public final class Money {
         }
        
         return new Money(
-            this.cents - other.cents,
+            Math.subtractExact(this.cents, other.cents),
             this.currency
         );
     }
 
-    public long getValue() {
+    public long amountInCents() {
         return cents;
     }
 }
