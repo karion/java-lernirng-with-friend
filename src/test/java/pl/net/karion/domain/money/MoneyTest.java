@@ -1,10 +1,8 @@
 package pl.net.karion.domain.money;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
-
-
 import static org.assertj.core.api.Assertions.*;
 
 public class MoneyTest {
@@ -30,8 +28,8 @@ public class MoneyTest {
         "-5,-6,-11"
     })
     void add_should_sum_cents(long a, long b, long expected) {
-            Money aMoney = new Money(a,  Currency.from("PLN"));
-            Money bMoney = new Money(b, Currency.from("PLN"));
+            Money aMoney = new Money(a,  Currency.PLN);
+            Money bMoney = new Money(b, Currency.PLN);
             Money result = aMoney.add(bMoney);
             assertThat(result.amountInCents()).isEqualTo(expected);
     }
@@ -45,12 +43,11 @@ public class MoneyTest {
         "-50,10,-60"
     })
     void sub_should_subtract_cents(long a, long b, long expected) {
-            Money aMoney = new Money(a,  Currency.from("PLN"));
-            Money bMoney = new Money(b, Currency.from("PLN"));
+            Money aMoney = new Money(a, Currency.PLN);
+            Money bMoney = new Money(b, Currency.PLN);
             Money result = aMoney.sub(bMoney);
             assertThat(result.amountInCents()).isEqualTo(expected);
     }
-
 
     @ParameterizedTest
     @CsvSource({
@@ -62,10 +59,35 @@ public class MoneyTest {
     })
     void is_equal_to_100PLN(long a, String c, boolean expected) {
 
-        Money orgin = new Money(100, Currency.from("PLN"));
+        Money orgin = new Money(100, Currency.PLN);
             
         Money other = new Money(a,  Currency.from(c));
         
         assertThat(orgin.equals(other)).isEqualTo(expected);
+    }
+
+    @Test
+    void equals_should_be_true_for_same_amount_and_currency() {
+        Money a = new Money(100, Currency.PLN);
+        Money b = new Money(100, Currency.PLN);
+
+        assertThat(a).isEqualTo(b);
+        assertThat(a.hashCode()).isEqualTo(b.hashCode());
+    }
+
+    @Test
+    void equals_should_be_false_for_different_currency() {
+        Money a = new Money(100, Currency.PLN);
+        Money b = new Money(100, Currency.EUR);
+
+        assertThat(a).isNotEqualTo(b);
+    }
+
+    @Test
+    void equals_should_be_false_for_null_and_other_types() {
+        Money a = new Money(100, Currency.PLN);
+
+        assertThat(a.equals(null)).isFalse();
+        assertThat(a.equals("100 PLN")).isFalse();
     }
 }
