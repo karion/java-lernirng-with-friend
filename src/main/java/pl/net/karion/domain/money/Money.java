@@ -31,9 +31,7 @@ public final class Money {
     public Money add(Money other) {
         Objects.requireNonNull(other, "other");
 
-        if (!other.currency.equals(this.currency)) {
-            throw new DomainException("Can't convert currency.");
-        }
+        ensureSameCurrency(other);
 
         return new Money(
             Math.addExact(this.cents, other.cents),
@@ -44,9 +42,7 @@ public final class Money {
     public Money sub(Money other) {
         Objects.requireNonNull(other, "other");
 
-        if (!other.currency.equals(this.currency)) {
-            throw new DomainException("Can't convert currency.");
-        }
+        ensureSameCurrency(other);
        
         return new Money(
             Math.subtractExact(this.cents, other.cents),
@@ -61,5 +57,25 @@ public final class Money {
     public Currency getCurrency()
     {
         return this.currency;
+    }
+
+    private void ensureSameCurrency(Money other) {
+        if (this.currency != other.currency) {
+            throw new DomainException("Currency mismatch");
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Money other)) return false;
+        return cents == other.cents && currency == other.currency;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Long.hashCode(cents);
+        result = 31 * result + currency.hashCode();
+        return result;
     }
 }
