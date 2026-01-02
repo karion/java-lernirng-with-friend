@@ -3,7 +3,9 @@ package pl.net.karion.domain.invoicing;
 import pl.net.karion.domain.DomainException;
 
 public record Quantity(int value) {
+
+    public static final String ERR_QUANTITY_BIGGER_THEN_ZERO = "Quantity must be > 0";
     public Quantity {
-        if (value <= 0) throw new DomainException("Quantity must be > 0");
+        if (value <= 0) throw new DomainException(ERR_QUANTITY_BIGGER_THEN_ZERO));
     }
 }

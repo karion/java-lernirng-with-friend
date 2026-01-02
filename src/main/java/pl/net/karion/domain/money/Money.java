@@ -61,7 +61,7 @@ public final class Money {
 
     private void ensureSameCurrency(Money other) {
         if (this.currency != other.currency) {
-            throw new DomainException("Currency mismatch");
+            throw new DomainException(Currency.ERR_CURRENCY_MISMATCH);
         }
     }
 

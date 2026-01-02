@@ -13,6 +13,8 @@ import pl.net.karion.domain.money.Money;
 import pl.net.karion.domain.money.VatRate;
 
 public final class Invoice {
+    public static final String ERR_INVOICE_ISSUED = "Invoice is not editable once issued";
+    public static final String ERR_NO_ITEMS = "Cannot issue invoice without items";
 
     private final InvoiceId id;
     private final Currency currency;
@@ -36,11 +38,13 @@ public final class Invoice {
     public InvoiceStatus status() { return status;}
     public Instant issuedAt() { return issuedAt;}
     public InvoiceNumber number() { return number;}
-    public List<InvoiceItem> items() { return items;}
+    public List<InvoiceItem> items() {
+        return List.copyOf(items);
+    }
 
     private void ensureDraft() {
         if (status != InvoiceStatus.DRAFT) {
-            throw new DomainException("Invoice is not editable once issued");
+            throw new DomainException(ERR_INVOICE_ISSUED);
         }
     }
 
@@ -48,7 +52,7 @@ public final class Invoice {
         ensureDraft();
         Objects.requireNonNull(item);
         if (this.currency != item.currency()) {
-            throw new DomainException("Incorrect currency.");
+            throw new DomainException(Currency.ERR_CURRENCY_MISMATCH);
         }
         this.items.add(item);
     }
@@ -60,7 +64,7 @@ public final class Invoice {
 
     public void issue(InvoiceNumber number, Instant date) {
         ensureDraft();
-        if (this.items.isEmpty()) { throw new DomainException("Cannot issue invoice without items");}
+        if (this.items.isEmpty()) { throw new DomainException(ERR_NO_ITEMS);}
 
         this.number = Objects.requireNonNull(number);
         this.issuedAt = Objects.requireNonNull(date);

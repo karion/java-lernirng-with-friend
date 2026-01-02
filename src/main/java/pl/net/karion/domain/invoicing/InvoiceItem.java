@@ -1,11 +1,15 @@
 package pl.net.karion.domain.invoicing;
 
+import java.util.Objects;
+
 import pl.net.karion.domain.DomainException;
 import pl.net.karion.domain.money.Currency;
 import pl.net.karion.domain.money.Money;
 import pl.net.karion.domain.money.VatRate;
 
 public final class InvoiceItem {
+    
+    public static final String ERR_ITEM_NAME_REQUIRED = "Item name is required.";
 
     private final String name;
     private final Quantity quantity;
@@ -18,11 +22,11 @@ public final class InvoiceItem {
         Money netPrice,
         VatRate vatRate
     ){
-        if(name == null || name.isBlank()) throw new DomainException("Item name is required.");
+        if(name == null || name.isBlank()) throw new DomainException(ERR_ITEM_NAME_REQUIRED);
         this.name = name;
-        this.quantity = quantity;
-        this.netPrice = netPrice;
-        this.vatRate = vatRate;
+        this.quantity = Objects.requireNonNull(quantity, "quantity");
+        this.netPrice  = Objects.requireNonNull(netPrice, "netPrice");
+        this.vatRate   = Objects.requireNonNull(vatRate, "vatRate");
     }
 
     public String name() { return name;}
