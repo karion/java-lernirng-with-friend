@@ -54,7 +54,7 @@ public final class Money {
         return cents;
     }
 
-    public Currency getCurrency()
+    public Currency currency()
     {
         return this.currency;
     }

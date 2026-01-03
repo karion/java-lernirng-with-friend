@@ -4,12 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
+import pl.net.karion.InMemoryInvoiceRepository;
 import pl.net.karion.application.invoicing.InvoiceRepository;
 import pl.net.karion.application.invoicing.command.AddItemToInvoiceCommand;
 import pl.net.karion.domain.invoicing.Invoice;
 import pl.net.karion.domain.invoicing.InvoiceId;
+import pl.net.karion.domain.invoicing.InvoiceItem;
 import pl.net.karion.domain.money.Currency;
-import pl.net.karion.infrastructure.invoicing.InMemoryInvoiceRepository;
+import pl.net.karion.domain.money.VatRate;
 
 public class AddItemToInvoiceHandlerTest {
 
@@ -39,6 +41,12 @@ public class AddItemToInvoiceHandlerTest {
         Invoice updatedInvoice = repo.findById(invoiceId).orElseThrow();
 
         assertThat(updatedInvoice.items().size()).isEqualTo(1);
-        assertThat(updatedInvoice.items().get(0).name()).isEqualTo("Test Item");
+
+        InvoiceItem addedItem = updatedInvoice.items().get(0);
+        assertThat(addedItem.name()).isEqualTo("Test Item");
+        assertThat(addedItem.quantity().value()).isEqualTo(2);
+        assertThat(addedItem.netPrice().amountInCents()).isEqualTo(10000);
+        assertThat(addedItem.netPrice().currency()).isEqualTo(Currency.PLN);
+        assertThat(addedItem.vatRate()).isEqualTo(VatRate.VAT_23);
     }
 }

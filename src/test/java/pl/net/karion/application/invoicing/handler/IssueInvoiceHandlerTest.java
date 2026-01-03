@@ -6,6 +6,7 @@ import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 
+import pl.net.karion.InMemoryInvoiceRepository;
 import pl.net.karion.application.invoicing.InvoiceRepository;
 import pl.net.karion.application.invoicing.command.IssueInvoiceCommand;
 import pl.net.karion.domain.invoicing.Invoice;
@@ -16,7 +17,6 @@ import pl.net.karion.domain.invoicing.Quantity;
 import pl.net.karion.domain.money.Currency;
 import pl.net.karion.domain.money.Money;
 import pl.net.karion.domain.money.VatRate;
-import pl.net.karion.infrastructure.invoicing.InMemoryInvoiceRepository;
 
 public class IssueInvoiceHandlerTest {
     

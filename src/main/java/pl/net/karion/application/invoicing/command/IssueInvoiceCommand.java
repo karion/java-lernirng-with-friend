@@ -13,5 +13,7 @@ public record IssueInvoiceCommand(
         Objects.requireNonNull(invoiceId, "invoiceId");
         Objects.requireNonNull(number, "number");
         Objects.requireNonNull(issueDate, "issueDate");
+
+        if (number.isBlank()) throw new IllegalArgumentException("number must not be blank");
     }
 }

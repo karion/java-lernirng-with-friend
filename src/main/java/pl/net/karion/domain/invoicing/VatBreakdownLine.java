@@ -14,7 +14,7 @@ public record VatBreakdownLine(VatRate rate, Money net, Money vat, Money gross) 
         Objects.requireNonNull(vat, "vat");
         Objects.requireNonNull(gross, "gross");
         // opcjonalnie: waluty muszą się zgadzać
-        if (net.getCurrency() != vat.getCurrency() || net.getCurrency() != gross.getCurrency()) {
+        if (net.currency() != vat.currency() || net.currency() != gross.currency()) {
             throw new DomainException(Currency.ERR_CURRENCY_MISMATCH);
         }
     }

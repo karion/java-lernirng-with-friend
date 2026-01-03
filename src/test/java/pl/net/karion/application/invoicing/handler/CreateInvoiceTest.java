@@ -3,9 +3,10 @@ package pl.net.karion.application.invoicing.handler;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-import pl.net.karion.infrastructure.invoicing.InMemoryInvoiceRepository;
+import pl.net.karion.InMemoryInvoiceRepository;
 import pl.net.karion.application.invoicing.InvoiceRepository;
 import pl.net.karion.application.invoicing.command.CreateInvoiceCommand;
 import pl.net.karion.domain.invoicing.Invoice;
@@ -30,6 +31,7 @@ public class CreateInvoiceTest {
         ).orElseThrow();
 
         assertThat(createdInvoice.id().value()).isEqualTo(invoiceId);
+        assertThat(createdInvoice.currency()).isEqualTo(Currency.USD);
     }
 
 }

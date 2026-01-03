@@ -24,7 +24,7 @@ public enum VatRate {
             .filter(v -> v.value == percent)
             .findFirst()
             .orElseThrow(() -> 
-                new DomainException("ERR_UNKNOWN_VAT_RATE")
+                new DomainException(ERR_UNKNOWN_VAT_RATE)
             );
     }
 
@@ -42,7 +42,7 @@ public enum VatRate {
                 .multiply(this.getMultiply())
                 .setScale(0, RoundingMode.HALF_UP)
                 .longValueExact(),
-            net.getCurrency()
+            net.currency()
         );
     }
 
@@ -51,7 +51,7 @@ public enum VatRate {
             BigDecimal.valueOf(gross.amountInCents())
                 .divide(this.getMultiply(), 0, RoundingMode.HALF_UP)
                 .longValueExact(),
-            gross.getCurrency()
+            gross.currency()
         );
     }
 }

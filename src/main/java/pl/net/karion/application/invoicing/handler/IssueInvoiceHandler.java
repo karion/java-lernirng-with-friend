@@ -6,8 +6,8 @@ import pl.net.karion.domain.invoicing.Invoice;
 import pl.net.karion.domain.invoicing.InvoiceId;
 import pl.net.karion.domain.invoicing.InvoiceNumber;
 
-public class IssueInvoiceHandler {
-    InvoiceRepository repo;
+public final class IssueInvoiceHandler {
+    private final InvoiceRepository repo;
     public IssueInvoiceHandler(InvoiceRepository invoiceRepository) {
         this.repo = invoiceRepository;
     }

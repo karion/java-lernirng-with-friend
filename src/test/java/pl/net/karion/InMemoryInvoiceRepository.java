@@ -1,4 +1,4 @@
-package pl.net.karion.infrastructure.invoicing;
+package pl.net.karion;
 
 import java.util.HashMap;
 import java.util.Map;
