@@ -32,7 +32,7 @@ public final class InvoiceItem {
     public String name() { return name;}
     public Quantity quantity() { return quantity;}
     public Money netPrice() { return netPrice;}
-    public Currency currency() { return netPrice.getCurrency();}
+    public Currency currency() { return netPrice.currency();}
     public VatRate vatRate() { return vatRate;}
     
     public Money netValue() {

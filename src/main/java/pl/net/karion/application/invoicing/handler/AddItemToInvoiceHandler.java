@@ -1,0 +1,39 @@
+package pl.net.karion.application.invoicing.handler;
+
+import pl.net.karion.application.invoicing.InvoiceRepository;
+import pl.net.karion.application.invoicing.command.AddItemToInvoiceCommand;
+import pl.net.karion.domain.DomainException;
+import pl.net.karion.domain.invoicing.Invoice;
+import pl.net.karion.domain.invoicing.InvoiceId;
+import pl.net.karion.domain.invoicing.InvoiceItem;
+import pl.net.karion.domain.invoicing.Quantity;
+import pl.net.karion.domain.money.Money;
+import pl.net.karion.domain.money.VatRate;
+
+public final class AddItemToInvoiceHandler {
+    private final InvoiceRepository repo;
+
+    public AddItemToInvoiceHandler(InvoiceRepository invoiceRepository) {
+        this.repo = invoiceRepository;
+    }
+
+    public void handle(AddItemToInvoiceCommand command) {
+        Invoice invoice = this.repo.findById(new InvoiceId(command.invoiceId()))
+            .orElseThrow(() -> new DomainException(InvoiceRepository.ERR_INVOICE_NOT_FOUND));
+
+        invoice.addItem(
+            new InvoiceItem(
+                command.name(),
+                new Quantity(command.quantity()),
+                new Money(
+                    command.netPrice(),
+                    command.currency()
+                ),
+                VatRate.fromPercent(command.vatRate())
+            )
+        );
+
+        this.repo.save(invoice);
+    }
+
+}

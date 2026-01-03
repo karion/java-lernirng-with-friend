@@ -21,7 +21,7 @@ public class InvoiceItemTest {
         );
 
         assertThat(item.netValue().amountInCents()).isEqualTo(250000);
-        assertThat(item.netValue().getCurrency()).isEqualTo(Currency.PLN);
+        assertThat(item.netValue().currency()).isEqualTo(Currency.PLN);
     }
     
     @Test
@@ -34,6 +34,6 @@ public class InvoiceItemTest {
         );
 
         assertThat(item.grossValue().amountInCents()).isEqualTo(307500);
-        assertThat(item.grossValue().getCurrency()).isEqualTo(Currency.PLN);
+        assertThat(item.grossValue().currency()).isEqualTo(Currency.PLN);
     }
 }
