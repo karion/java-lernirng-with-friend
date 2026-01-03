@@ -55,7 +55,7 @@ public class MoneyTest {
         "0,'PLN',false",
         "101,'PLN',false",
         "99,'PLN',false",
-        "100,'EUR',false",
+        "100,'EUR',false"
     })
     void is_equal_to_100PLN(long a, String c, boolean expected) {
 

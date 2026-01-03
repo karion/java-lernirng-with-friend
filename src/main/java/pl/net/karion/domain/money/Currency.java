@@ -10,11 +10,15 @@ public enum Currency {
     public static final String ERR_CURRENCY_MISMATCH = "Currency mismatch";
     public static final String ERR_UNKNOWN_CURRENCY = "Unknown currency";
 
-    static Currency from(String value) {
-        try {
-            return Currency.valueOf(value.toUpperCase(Locale.ROOT));
-        } catch (Exception e) {
+    public static Currency from(String value) {
+        if (value == null || value.isBlank()) {
             throw new DomainException(ERR_UNKNOWN_CURRENCY);
         }
+        try {
+            return Currency.valueOf(value.toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            throw new DomainException(ERR_UNKNOWN_CURRENCY, e);
+        }
     }
+
 }
