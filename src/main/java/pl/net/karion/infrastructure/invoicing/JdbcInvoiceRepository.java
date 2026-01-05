@@ -20,7 +20,7 @@ import pl.net.karion.domain.money.Money;
 import pl.net.karion.domain.money.VatRate;
 
 public final class JdbcInvoiceRepository implements InvoiceRepository {
-private final String jdbcUrl;
+    private final String jdbcUrl;
     private final String username;
     private final String password;
 
