@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "postgres",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "dev",
+            "group": "main",
+            "database": "myapp",
+            "username": "myapp",
+            "password": "myapp"
+        }
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
+}
