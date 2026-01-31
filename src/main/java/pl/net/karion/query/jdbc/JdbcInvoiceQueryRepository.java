@@ -45,27 +45,30 @@ public class JdbcInvoiceQueryRepository implements InvoiceQueryRepository {
     }
 
     public Optional<InvoiceDetails> findById(UUID id) {
-        try {
+
+        String sql = """
+            SELECT id, currency, number, status, issued_at
+            FROM invoices
+            WHERE id = ?
+            """;
+                
+        try (
             Connection c = this.getConnection();
-            PreparedStatement ps = c.prepareStatement(
-                """
-                SELECT id, currency, number, status, issued_at
-                FROM invoices
-                WHERE id = ?
-                """
-            );
+            PreparedStatement ps = c.prepareStatement(sql)
+        ) {
             ps.setObject(1, id);
 
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                return Optional.empty();
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    return Optional.empty();
+                }
+        
+                List<InvoiceItemRow> itemRows = this.getItemRows(new UUID[]{id});
+
+                InvoiceDetails invoiceDetails = this.invoiceDetailsRowMapper.mapRow(rs, itemRows);
+
+                return Optional.of(invoiceDetails);
             }
-
-            List<InvoiceItemRow> itemRows = this.getItemRows(new UUID[]{id});
-
-            InvoiceDetails invoiceDetails = this.invoiceDetailsRowMapper.mapRow(rs, itemRows);
-
-            return Optional.of(invoiceDetails);
         } catch (SQLException e) {
             throw new RuntimeException("Error fetching invoice details", e);
         }
@@ -89,11 +92,9 @@ public class JdbcInvoiceQueryRepository implements InvoiceQueryRepository {
 
             ps.setArray(1, sqlArray);
 
-            ResultSet rs = ps.executeQuery();
-
-            List<InvoiceItemRow> items = this.invoiceListRowMapper.mapItemRow(rs);
-
-            return items;
+            try (ResultSet rs = ps.executeQuery()) {
+                return this.invoiceListRowMapper.mapItemRow(rs);
+            }
         }
     }
 
@@ -124,19 +125,15 @@ public class JdbcInvoiceQueryRepository implements InvoiceQueryRepository {
                 rows.add(row);
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Error fetching invoice list rows", e);
-        }
+            UUID[] uuids = rows.stream()
+                .map(InvoiceListRow::id)
+                .toArray(UUID[]::new);
 
-        UUID[] uuids = rows.stream()
-            .map(InvoiceListRow::id)
-            .toArray(UUID[]::new);
-
-        try {
             return this.invoiceListRowMapper.enrichInvoiceListRowsWithTotals(
                 rows,
                 this.getItemRows(uuids)
             );
+
         } catch (SQLException e) {
             throw new RuntimeException("Error fetching invoice list rows", e);
         }
