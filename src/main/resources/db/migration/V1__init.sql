@@ -11,5 +11,6 @@ CREATE TABLE invoice_items (
     name TEXT NOT NULL,
     quantity INT NOT NULL,
     net_price_cents BIGINT NOT NULL,
+    currency VARCHAR(3) NOT NULL,
     vat_rate SMALLINT NOT NULL
 );

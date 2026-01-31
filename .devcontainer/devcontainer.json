@@ -24,8 +24,11 @@
     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
   ],
   "containerEnv": {
-    "DOCKER_HOST": "unix:///var/run/docker-host.sock",
-    "TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE": "/var/run/docker-host.sock",
+    "DOCKER_HOST": "unix:///var/run/docker.sock",
+    "DOCKER_API_VERSION": "1.44",
+    "TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE": "/var/run/docker.sock",
     "TESTCONTAINERS_RYUK_DISABLED": "true"
   }
+
+  
 }

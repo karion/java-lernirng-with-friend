@@ -20,7 +20,7 @@ import pl.net.karion.domain.money.Money;
 import pl.net.karion.domain.money.VatRate;
 
 public final class JdbcInvoiceRepository implements InvoiceRepository {
-private final String jdbcUrl;
+    private final String jdbcUrl;
     private final String username;
     private final String password;
 
@@ -79,7 +79,7 @@ private final String jdbcUrl;
             InvoiceItem item = new InvoiceItem(
                 it.name,
                 new Quantity(it.quantity),
-                new Money(it.netPriceCents, invoice.currency()),
+                new Money(it.netPriceCents, Currency.valueOf(it.currency)),
                 vatRateFromPercent(it.vatRatePercent)
             );
             invoice.addItem(item);
@@ -148,8 +148,8 @@ private final String jdbcUrl;
         }
 
         final String ins = """
-            INSERT INTO invoice_items (invoice_id, name, quantity, net_price_cents, vat_rate)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO invoice_items (invoice_id, name, quantity, currency, net_price_cents, vat_rate)
+            VALUES (?, ?, ?, ?, ?, ?)
             """;
 
         try (PreparedStatement ps = c.prepareStatement(ins)) {
@@ -157,8 +157,9 @@ private final String jdbcUrl;
                 ps.setObject(1, invoice.id().value());
                 ps.setString(2, item.name());
                 ps.setInt(3, item.quantity().value());
-                ps.setLong(4, item.netPrice().amountInCents());
-                ps.setLong(5, vatPercent(item.vatRate()));
+                ps.setString(4, item.currency().name());                
+                ps.setLong(5, item.netPrice().amountInCents());
+                ps.setLong(6, vatPercent(item.vatRate()));
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -193,7 +194,7 @@ private final String jdbcUrl;
 
     private List<InvoiceItemRow> selectInvoiceItems(Connection c, UUID invoiceId) throws SQLException {
         final String sql = """
-            SELECT name, quantity, net_price_cents, vat_rate
+            SELECT name, quantity, currency, net_price_cents, vat_rate
             FROM invoice_items
             WHERE invoice_id = ?
             ORDER BY name ASC
@@ -207,6 +208,7 @@ private final String jdbcUrl;
                     InvoiceItemRow r = new InvoiceItemRow();
                     r.name = rs.getString("name");
                     r.quantity = rs.getInt("quantity");
+                    r.currency = rs.getString("currency");
                     r.netPriceCents = rs.getLong("net_price_cents");
                     r.vatRatePercent = rs.getLong("vat_rate");
                     items.add(r);
@@ -260,6 +262,7 @@ private final String jdbcUrl;
     private static final class InvoiceItemRow {
         String name;
         int quantity;
+        String currency;
         long netPriceCents;
         long vatRatePercent;
     }
