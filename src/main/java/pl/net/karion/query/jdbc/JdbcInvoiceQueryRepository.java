@@ -1,6 +1,11 @@
 package pl.net.karion.query.jdbc;
 
-import java.sql.*;
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,8 +46,6 @@ public class JdbcInvoiceQueryRepository implements InvoiceQueryRepository {
 
     public Optional<InvoiceDetails> findById(UUID id) {
         try {
-            List<InvoiceItemRow> itemRows = this.getItemRows(new UUID[]{id});
- 
             Connection c = this.getConnection();
             PreparedStatement ps = c.prepareStatement(
                 """
@@ -58,6 +61,8 @@ public class JdbcInvoiceQueryRepository implements InvoiceQueryRepository {
                 return Optional.empty();
             }
 
+            List<InvoiceItemRow> itemRows = this.getItemRows(new UUID[]{id});
+
             InvoiceDetails invoiceDetails = this.invoiceDetailsRowMapper.mapRow(rs, itemRows);
 
             return Optional.of(invoiceDetails);
@@ -66,33 +71,30 @@ public class JdbcInvoiceQueryRepository implements InvoiceQueryRepository {
         }
     }
 
-
     private List<InvoiceItemRow> getItemRows(UUID[] uuids) throws SQLException {
 
-    //         invoice_id UUID NOT NULL REFERENCES invoices(id) ON DELETE CASCADE,
-    // name TEXT NOT NULL,
-    // quantity INT NOT NULL,
-    // net_price_cents BIGINT NOT NULL,
-    // vat_rate SMALLINT NOT NULL
-
         final String sql = """
-            SELECT invoice_id, name, quantity, net_price, vat_rate
+            SELECT invoice_id, name, quantity, currency, net_price_cents, vat_rate
             FROM invoice_items
             WHERE invoice_id = ANY (?)
             ORDER BY name ASC
             """;
+
+        try (
+            Connection connection = this.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+        ){
         
+            Array sqlArray = connection.createArrayOf("uuid", uuids);
 
-        // UUID[] uuidArray = uuids.toArray(UUID[]::new);
-        Connection connection = this.getConnection();
-        Array sqlArray = connection.createArrayOf("uuid", uuids);
+            ps.setArray(1, sqlArray);
 
-        PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
 
-        ps.setArray(1, sqlArray);
+            List<InvoiceItemRow> items = this.invoiceListRowMapper.mapItemRow(rs);
 
-
-        return null;
+            return items;
+        }
     }
 
     private List<InvoiceListRow> getInvoiceListRows(int limit, int offset) {
