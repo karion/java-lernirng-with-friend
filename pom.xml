@@ -23,10 +23,13 @@
   <!-- 2) Wersje / ustawienia globalne -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.version>1.0-SNAPSHOT</project.version>
 
     <!-- Ustal jedną wersję Javy dla całości -->
     <java.version>21</java.version>
     <maven.compiler.release>${java.version}</maven.compiler.release>
+    <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+
 
     <!-- Wersje BOM-ów -->
     <spring-boot.version>3.3.5</spring-boot.version>
@@ -82,12 +85,14 @@
 
         <!-- Kompilator -->
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <release>${java.version}</release>
-          </configuration>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven.compiler.plugin.version}</version>
+            <configuration>
+                <release>${java.version}</release>
+            </configuration>
         </plugin>
+
 
         <!-- Testy jednostkowe -->
         <plugin>

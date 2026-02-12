@@ -7,9 +7,9 @@ import pl.net.karion.domain.invoicing.InvoiceId;
 import pl.net.karion.domain.invoicing.InvoiceItem;
 import pl.net.karion.domain.invoicing.InvoiceNumber;
 import pl.net.karion.domain.invoicing.Quantity;
-import pl.net.karion.domain.money.Currency;
-import pl.net.karion.domain.money.Money;
-import pl.net.karion.domain.money.VatRate;
+import pl.net.karion.money.domain.Currency;
+import pl.net.karion.money.domain.Money;
+import pl.net.karion.money.domain.VatRate;
 
 public final class TestInvoiceFactory {
     public static Invoice invoice(

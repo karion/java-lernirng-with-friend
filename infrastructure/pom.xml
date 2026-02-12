@@ -9,6 +9,7 @@
     <groupId>pl.net.karion</groupId>
     <artifactId>java-learning-with-friend</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>infrastructure</artifactId>
@@ -23,6 +24,7 @@
     <dependency>
       <groupId>pl.net.karion</groupId>
       <artifactId>application</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <!-- JDBC driver (runtime only) -->

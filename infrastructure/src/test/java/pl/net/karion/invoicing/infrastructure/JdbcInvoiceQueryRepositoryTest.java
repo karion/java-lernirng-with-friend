@@ -1,4 +1,4 @@
-package pl.net.karion.query.jdbc;
+package pl.net.karion.invoicing.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 import pl.net.karion.PostgresTestContainer;
-import pl.net.karion.application.invoicing.InvoiceRepository;
+import pl.net.karion.invoicing.application.InvoiceRepository;
 import pl.net.karion.domain.invoicing.Invoice;
-import pl.net.karion.infrastructure.invoicing.JdbcInvoiceRepository;
-import pl.net.karion.infrastructure.invoicing.testfixtures.TestInvoiceFactory;
+import pl.net.karion.invoicing.infrastructure.jdbc.JdbcInvoiceRepository;
+import pl.net.karion.invoicing.infrastructure.testfixtures.TestInvoiceFactory;
 import pl.net.karion.query.jdbc.mapper.InvoiceDetailsRowMapper;
 import pl.net.karion.query.jdbc.mapper.InvoiceListRowMapper;
 import pl.net.karion.query.model.InvoiceDetails;

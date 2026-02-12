@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.Objects;
 
-import pl.net.karion.domain.DomainException;
+import pl.net.karion.shared.domain.DomainException;
 
 public final class Money {
     private final long cents;

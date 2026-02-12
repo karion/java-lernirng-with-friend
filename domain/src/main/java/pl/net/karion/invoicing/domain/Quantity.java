@@ -1,6 +1,6 @@
 package pl.net.karion.invoicing.domain;
 
-import pl.net.karion.domain.DomainException;
+import pl.net.karion.shared.domain.DomainException;
 
 public record Quantity(int value) {
 

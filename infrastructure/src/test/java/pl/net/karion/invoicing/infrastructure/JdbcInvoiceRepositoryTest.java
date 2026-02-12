@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import pl.net.karion.PostgresTestContainer;
 import pl.net.karion.domain.invoicing.Invoice;
 import pl.net.karion.domain.invoicing.InvoiceId;
-import pl.net.karion.domain.money.Currency;
+import pl.net.karion.money.domain.Currency;
 
 public class JdbcInvoiceRepositoryTest extends PostgresTestContainer {
     private JdbcInvoiceRepository repo;

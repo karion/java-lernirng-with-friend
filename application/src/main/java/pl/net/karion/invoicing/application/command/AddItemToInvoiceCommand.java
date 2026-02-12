@@ -1,8 +1,7 @@
 package pl.net.karion.invoicing.application.command;
 
 import java.util.Objects;
-
-import pl.net.karion.domain.money.Currency;
+import pl.net.karion.money.domain.Currency;
 
 public record AddItemToInvoiceCommand(
     String name,

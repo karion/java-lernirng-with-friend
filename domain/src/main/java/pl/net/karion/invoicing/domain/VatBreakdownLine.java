@@ -2,7 +2,7 @@ package pl.net.karion.invoicing.domain;
 
 import java.util.Objects;
 
-import pl.net.karion.domain.DomainException;
+import pl.net.karion.shared.domain.DomainException;
 import pl.net.karion.money.domain.Currency;
 import pl.net.karion.money.domain.Money;
 import pl.net.karion.money.domain.VatRate;

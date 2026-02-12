@@ -1,4 +1,4 @@
-package pl.net.karion.invoicing.infrastructure;
+package pl.net.karion.invoicing.infrastructure.jdbc;
 
 import java.sql.*;
 import java.time.Instant;
@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import pl.net.karion.application.invoicing.InvoiceRepository;
-import pl.net.karion.domain.DomainException;
+import pl.net.karion.invoicing.application.InvoiceRepository;
+import pl.net.karion.shared.domain.DomainException;
 import pl.net.karion.domain.invoicing.Invoice;
 import pl.net.karion.domain.invoicing.InvoiceId;
 import pl.net.karion.domain.invoicing.InvoiceItem;
 import pl.net.karion.domain.invoicing.InvoiceNumber;
 import pl.net.karion.domain.invoicing.InvoiceStatus;
 import pl.net.karion.domain.invoicing.Quantity;
-import pl.net.karion.domain.money.Currency;
-import pl.net.karion.domain.money.Money;
-import pl.net.karion.domain.money.VatRate;
+import pl.net.karion.money.domain.Currency;
+import pl.net.karion.money.domain.Money;
+import pl.net.karion.money.domain.VatRate;
 
 public final class JdbcInvoiceRepository implements InvoiceRepository {
     private final String jdbcUrl;

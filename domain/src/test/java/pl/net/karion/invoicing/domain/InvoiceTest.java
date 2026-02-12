@@ -9,7 +9,7 @@ import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 
-import pl.net.karion.domain.DomainException;
+import pl.net.karion.shared.domain.DomainException;
 import pl.net.karion.money.domain.Currency;
 import pl.net.karion.money.domain.Money;
 import pl.net.karion.money.domain.VatRate;

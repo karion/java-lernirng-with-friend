@@ -2,7 +2,7 @@ package pl.net.karion.money.domain;
 
 import java.util.Locale;
 
-import pl.net.karion.domain.DomainException;
+import pl.net.karion.shared.domain.DomainException;
 
 public enum Currency {
     PLN, USD, EUR;

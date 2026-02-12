@@ -3,8 +3,8 @@ package pl.net.karion.invoicing.application.handler;
 import java.util.Objects;
 import java.util.UUID;
 
-import pl.net.karion.application.invoicing.InvoiceRepository;
-import pl.net.karion.application.invoicing.command.CreateInvoiceCommand;
+import pl.net.karion.invoicing.application.InvoiceRepository;
+import pl.net.karion.invoicing.application.command.CreateInvoiceCommand;
 import pl.net.karion.domain.invoicing.Invoice;
 import pl.net.karion.domain.invoicing.InvoiceId;
 

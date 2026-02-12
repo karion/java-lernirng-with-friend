@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 import pl.net.karion.InMemoryInvoiceRepository;
-import pl.net.karion.application.invoicing.InvoiceRepository;
-import pl.net.karion.application.invoicing.command.AddItemToInvoiceCommand;
+import pl.net.karion.invoicing.application.InvoiceRepository;
+import pl.net.karion.invoicing.application.command.AddItemToInvoiceCommand;
 import pl.net.karion.domain.invoicing.Invoice;
 import pl.net.karion.domain.invoicing.InvoiceId;
 import pl.net.karion.domain.invoicing.InvoiceItem;
-import pl.net.karion.domain.money.Currency;
-import pl.net.karion.domain.money.VatRate;
+import pl.net.karion.money.domain.Currency;
+import pl.net.karion.money.domain.VatRate;
 
 public class AddItemToInvoiceHandlerTest {
 

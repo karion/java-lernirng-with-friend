@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import pl.net.karion.InMemoryInvoiceRepository;
-import pl.net.karion.application.invoicing.InvoiceRepository;
-import pl.net.karion.application.invoicing.command.CreateInvoiceCommand;
+import pl.net.karion.invoicing.application.InvoiceRepository;
+import pl.net.karion.invoicing.application.command.CreateInvoiceCommand;
 import pl.net.karion.domain.invoicing.Invoice;
 import pl.net.karion.domain.invoicing.InvoiceId;
-import pl.net.karion.domain.money.Currency;
+import pl.net.karion.money.domain.Currency;
 
 public class CreateInvoiceTest {
 

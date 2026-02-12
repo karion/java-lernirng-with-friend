@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import pl.net.karion.application.invoicing.InvoiceRepository;
+import pl.net.karion.invoicing.application.InvoiceRepository;
 import pl.net.karion.domain.invoicing.Invoice;
 import pl.net.karion.domain.invoicing.InvoiceId;
 
