@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>pl.net.karion</groupId>
+    <artifactId>java-learning-with-friend</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>infrastructure</artifactId>
+  <packaging>jar</packaging>
+
+  <name>infrastructure</name>
+  <description>Infrastructure adapters (JDBC, Flyway migrations, external integrations) without Spring</description>
+
+  <dependencies>
+
+    <!-- Application layer (ports) -->
+    <dependency>
+      <groupId>pl.net.karion</groupId>
+      <artifactId>application</artifactId>
+    </dependency>
+
+    <!-- JDBC driver (runtime only) -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- Flyway (only if you keep migrations & run them in infrastructure tests) -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+
+    <!-- Logging API (implementation will be provided by bootstrap-spring at runtime) -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <!-- ========================= -->
+    <!-- Tests                     -->
+    <!-- ========================= -->
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- (Opcjonalnie) pomocne w testach, jeśli asercje są ciężkie -->
+    <!--
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    -->
+
+  </dependencies>
+
+</project>

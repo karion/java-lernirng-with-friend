@@ -1,31 +1,57 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="
+           http://maven.apache.org/POM/4.0.0
+           http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>pl.net.karion.java</groupId>
-  <artifactId>domain</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <groupId>pl.net.karion</groupId>
+  <artifactId>java-learning-with-friend</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>java-learning-with-friend (parent)</name>
 
+  <!-- 1) Moduły -->
+  <modules>
+    <module>domain</module>
+    <module>application</module>
+    <module>infrastructure</module>
+    <module>bootstrap-spring</module>
+  </modules>
+
+  <!-- 2) Wersje / ustawienia globalne -->
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Ustal jedną wersję Javy dla całości -->
     <java.version>21</java.version>
-    <maven.compiler.release>21</maven.compiler.release>
+    <maven.compiler.release>${java.version}</maven.compiler.release>
 
-    <junit.version>5.10.2</junit.version>
-    <assertj.version>3.26.0</assertj.version>
-    <mockito.version>5.11.0</mockito.version>
-    <flyway.version>10.15.0</flyway.version>
-
-    <!-- pin docker-java (workaround na problem z v1.32) -->
-    <dockerjava.version>3.3.4</dockerjava.version>
+    <!-- Wersje BOM-ów -->
+    <spring-boot.version>3.3.5</spring-boot.version>
     <testcontainers.version>1.20.4</testcontainers.version>
+
+    <!-- Sensowne domyślne wersje pluginów (opcjonalnie) -->
+    <maven.enforcer.version>3.5.0</maven.enforcer.version>
+    <maven.surefire.version>3.5.2</maven.surefire.version>
+    <maven.failsafe.version>3.5.2</maven.failsafe.version>
   </properties>
 
+  <!-- 3) Dependency Management = centralne wersje zależności -->
   <dependencyManagement>
     <dependencies>
+
+      <!-- Spring Boot BOM: wersje dla całego ekosystemu Spring/3rd party -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Testcontainers BOM (nie zawsze jest w boot BOM w preferowanej wersji) -->
       <dependency>
         <groupId>org.testcontainers</groupId>
         <artifactId>testcontainers-bom</artifactId>
@@ -34,138 +60,99 @@
         <scope>import</scope>
       </dependency>
 
-      <!-- wymuszamy spójny zestaw docker-java -->
-      <dependency>
-        <groupId>com.github.docker-java</groupId>
-        <artifactId>docker-java-api</artifactId>
-        <version>${dockerjava.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.docker-java</groupId>
-        <artifactId>docker-java-core</artifactId>
-        <version>${dockerjava.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.docker-java</groupId>
-        <artifactId>docker-java-transport</artifactId>
-        <version>${dockerjava.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.docker-java</groupId>
-        <artifactId>docker-java-transport-zerodep</artifactId>
-        <version>${dockerjava.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.docker-java</groupId>
-        <artifactId>docker-java-transport-httpclient5</artifactId>
-        <version>${dockerjava.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
+  <!-- 4) Wspólne zależności dla modułów (opcjonalnie, ostrożnie z tym) -->
+  <!-- Ja zwykle NIE wrzucam tu nic poza ewentualnie testami,
+       bo łatwo "przypadkiem" wciągnąć coś do domain. -->
   <dependencies>
-    <!-- JUnit 5 -->
+    <!-- Przykład: JUnit jako wspólna zależność testowa (OK) -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- AssertJ -->
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>${assertj.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- Mockito -->
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>${mockito.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- Flyway -->
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
-      <version>${flyway.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-database-postgresql</artifactId>
-      <version>${flyway.version}</version>
-    </dependency>
-
-    <!-- PostgreSQL driver -->
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>42.7.3</version>
-      <scope>runtime</scope>
-    </dependency>
-
-    <!-- Testcontainers -->
-    <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>postgresql</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- logger do testów -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>2.0.13</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.17.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
+  <!-- 5) Plugin Management = jedna konfiguracja builda dla wszystkich -->
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
-        <configuration>
-          <release>${maven.compiler.release}</release>
-        </configuration>
-      </plugin>
+    <pluginManagement>
+      <plugins>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.2</version>
-        <configuration>
+        <!-- Kompilator -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <release>${java.version}</release>
+          </configuration>
+        </plugin>
+
+        <!-- Testy jednostkowe -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.version}</version>
+          <configuration>
             <useModulePath>false</useModulePath>
-            <systemPropertyVariables>
-                <!-- Testcontainers -->
-                <docker.host>unix:///var/run/docker.sock</docker.host>
-                <docker.api.version>1.44</docker.api.version>
+            <failIfNoTests>false</failIfNoTests>
+          </configuration>
+        </plugin>
 
-                <!-- docker-java (różne klucze, bo w praktyce bywa różnie) -->
-                <dockerjava.api.version>1.44</dockerjava.api.version>
-                <api.version>1.44</api.version>
-            </systemPropertyVariables>
+        <!-- Testy integracyjne (jeśli rozdzielasz UT vs IT) -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${maven.failsafe.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <useModulePath>false</useModulePath>
+          </configuration>
+        </plugin>
 
-        </configuration>
-      </plugin>
-    </plugins>
+        <!-- Enforcer: spójne wersje, Java version, zakaz snapshotów itd. -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${maven.enforcer.version}</version>
+          <executions>
+            <execution>
+              <id>enforce</id>
+              <goals><goal>enforce</goal></goals>
+              <configuration>
+                <rules>
+                  <requireJavaVersion>
+                    <version>[${java.version},)</version>
+                  </requireJavaVersion>
+                  <requireMavenVersion>
+                    <version>[3.9,)</version>
+                  </requireMavenVersion>
+                </rules>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
   </build>
+
+  <!-- 6) Profile (opcjonalnie) – np. osobny profil do IT -->
+  <profiles>
+    <profile>
+      <id>it</id>
+      <properties>
+        <!-- Możesz włączać IT np. mvn -Pit verify -->
+      </properties>
+    </profile>
+  </profiles>
 
 </project>
